@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:HardwareSampleMaui.ViewModels"
+    x:Class="HardwareSampleMaui.Pages.ConnectionPage"
+    x:DataType="viewModels:ConnectionViewModel"
+    Title="Device Connection"
+    BackgroundImageSource="background.png"
+    Shell.TitleColor="White"
+    Shell.BackgroundColor="#2196F3">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="{Binding CanGoPreviousPage, Mode=OneWay}" IsEnabled="{Binding CanGoPreviousPage, Mode=OneWay}" />
+    </Shell.BackButtonBehavior>
+    <VerticalStackLayout
+        MaximumWidthRequest="500"
+        Margin="10,10,10,0">
+        <Border 
+            BackgroundColor="AliceBlue">
+            <Grid 
+                RowSpacing="0"
+                Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label 
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Connection status:" 
+                    IsEnabled="{Binding UiEntryEnabled}"
+                    HorizontalTextAlignment="End"
+                    FontAttributes="Bold" />
+                <Label 
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Text="{Binding ConnectionStatus}" 
+                    IsEnabled="{Binding UiEntryEnabled}"
+                    FontAttributes="Bold" 
+                    Margin="5,0,0,0" />
+
+                <Label 
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Make:" 
+                    IsEnabled="{Binding UiEntryEnabled}" 
+                    IsVisible="{Binding IsConnected}"
+                    HorizontalTextAlignment="End" />
+                <Label 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="{Binding ConnectedDeviceMake}" 
+                    IsEnabled="{Binding UiEntryEnabled}"
+                    IsVisible="{Binding IsConnected}"
+                    Margin="5,0,0,0" />
+
+                <Label 
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Text="Model:" 
+                    IsEnabled="{Binding UiEntryEnabled}" 
+                    IsVisible="{Binding IsConnected}" 
+                    HorizontalTextAlignment="End" />
+                <Label 
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Text="{Binding ConnectedDeviceModel}" 
+                    IsEnabled="{Binding UiEntryEnabled}"
+                    IsVisible="{Binding IsConnected}"
+                    Margin="5,0,0,0" />
+
+            </Grid>
+        </Border>
+
+        <Label 
+            Text="Connection Type:" 
+            IsEnabled="{Binding UiEntryEnabled}"
+            FontAttributes="Bold"
+            Margin="5,5,5,0" />
+        <Picker
+            ItemsSource="{Binding ConnectionTypes, Mode=OneWay}"
+            SelectedItem="{Binding SelectedConnectionType}"
+            IsEnabled="{Binding CanSelectConnectionTypes}"
+            BackgroundColor="AliceBlue" />
+
+        <Label 
+            Text="Reader:" 
+            IsVisible="{Binding IsCommChannelsVisible}"
+            IsEnabled="{Binding UiEntryEnabled}"
+            FontAttributes="Bold"
+            Margin="5,2,5,0" />
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <Picker
+                Grid.Column="0"
+                ItemsSource="{Binding CommChannels, Mode=OneWay}"
+                SelectedItem="{Binding SelectedCommChannel}"
+                IsEnabled="{Binding CanSelectCommChannels}"
+                IsVisible="{Binding IsCommChannelsVisible}"
+                BackgroundColor="AliceBlue" />
+
+            <Button 
+                Grid.Column="1"
+                Text="Discover"
+                Command="{Binding DiscoverComm}"
+                CommandParameter="{Binding SelectedConnectionType}" 
+                IsEnabled="{Binding CanDiscoverComm}"
+                IsVisible="{Binding IsCommChannelsVisible}" 
+                Margin="5,0,0,0" />
+
+        </Grid>
+
+        <Label
+            Text="IP Address"
+            IsEnabled="{Binding UiEntryEnabled}"
+            IsVisible="{Binding IsIpAddressVisible}" 
+            FontAttributes="Bold"
+            Margin="5,2,5,0" />
+        <Entry
+            Placeholder="192.168.0.1"
+            Text="{Binding IpAddress}"
+            IsEnabled="{Binding CanEnterIpAddress}"
+            IsVisible="{Binding IsIpAddressVisible}"
+            Keyboard="Plain"
+            BackgroundColor="AliceBlue" />
+
+        <Grid
+            Margin="0,15,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button 
+                Grid.Column="0"
+                Text="Disconnect"
+                Command="{Binding Disconnect}"
+                IsEnabled="{Binding CanDisconnect}" />
+
+            <Button 
+                Grid.Column="2"
+                Text="Connect"
+                Command="{Binding Connect}"
+                CommandParameter="{Binding}"
+                IsEnabled="{Binding CanConnect}" />
+
+        </Grid>
+
+        <Button 
+            Text="Transaction"
+            IsEnabled="{Binding CanGoToTransaction}"
+            Command="{Binding NavigateNext}" 
+            Margin="0,10,0,0" />
+
+        <Label 
+            Text="{Binding Error}" 
+            TextColor="Red" 
+            FontAttributes="Bold"
+            Margin="0,10,0,10" />
+
+    </VerticalStackLayout>
+</ContentPage>

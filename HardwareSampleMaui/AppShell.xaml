@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="HardwareSampleMaui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:HardwareSampleMaui.Pages"
+    Shell.FlyoutBehavior="Disabled"
+    Title="HardwareSampleMaui">
+
+    <ShellContent
+        Title="Device Assemblies"
+        ContentTemplate="{DataTemplate pages:DevicePage}"
+        Route="MainPage" />
+
+    <ShellContent
+        Title="Device Connection"
+        ContentTemplate="{DataTemplate pages:ConnectionPage}"
+        Route="Connection" />
+
+    <ShellContent
+        Title="Transaction"
+        ContentTemplate="{DataTemplate pages:TransactionPage}"
+        Route="Transaction" />
+
+</Shell>

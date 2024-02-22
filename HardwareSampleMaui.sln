@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HardwareSampleMaui", "HardwareSampleMaui\HardwareSampleMaui.csproj", "{71A48F7D-3808-48AB-A62B-5CD9ACCBC06D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71A48F7D-3808-48AB-A62B-5CD9ACCBC06D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71A48F7D-3808-48AB-A62B-5CD9ACCBC06D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71A48F7D-3808-48AB-A62B-5CD9ACCBC06D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{71A48F7D-3808-48AB-A62B-5CD9ACCBC06D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71A48F7D-3808-48AB-A62B-5CD9ACCBC06D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71A48F7D-3808-48AB-A62B-5CD9ACCBC06D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {72A9D8AF-B484-4ADA-8F86-D6F9E01DC611}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://slimcd.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = HardwareSampleMaui\\HardwareSampleMaui.csproj
+		SccProjectName1 = HardwareSampleMaui
+		SccLocalPath1 = HardwareSampleMaui
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:HardwareSampleMaui.ViewModels"
+             x:Class="HardwareSampleMaui.Pages.TransactionPage"
+             x:DataType="viewModels:TransactionViewModel"
+             Title="Transaction"
+             BackgroundImageSource="background.png"
+             Shell.TitleColor="White"
+             Shell.BackgroundColor="#2196F3">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="{Binding CanGoPreviousPage, Mode=OneWay}" IsEnabled="{Binding CanGoPreviousPage, Mode=OneWay}" />
+    </Shell.BackButtonBehavior>
+    <VerticalStackLayout
+        MaximumWidthRequest="500"
+        Margin="10,4,10,0">
+
+        <Label 
+            Text="Status:" 
+            IsEnabled="{Binding UiEntryEnabled}"
+            FontAttributes="Bold" 
+            Margin="5,0,0,0" />
+
+        <Border 
+            BackgroundColor="AliceBlue"
+            Padding="8,5,8,5">
+            <Label 
+                Text="{Binding Status}" 
+                IsEnabled="{Binding UiEntryEnabled}"
+                FontAttributes="Bold" />
+        </Border>
+
+        <Label
+            Text="Amount"
+            IsEnabled="{Binding UiEntryEnabled}"
+            FontAttributes="Bold"
+            Margin="5,2,5,0" />
+        <Entry
+            Placeholder="Enter amount"
+            Text="{Binding Amount}"
+            IsEnabled="{Binding UiEntryEnabled}"
+            Keyboard="Numeric"
+            BackgroundColor="AliceBlue" />
+
+        <Grid
+            Margin="0,15,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button 
+                Grid.Column="0"
+                Text="Cancel"
+                Command="{Binding Cancel}"
+                IsEnabled="{Binding CanCancel}" />
+
+            <Button 
+                Grid.Column="2"
+                Text="Start"
+                Command="{Binding Start}"
+                CommandParameter="{Binding}"
+                IsEnabled="{Binding CanStart}" />
+
+        </Grid>
+
+    </VerticalStackLayout>
+</ContentPage>

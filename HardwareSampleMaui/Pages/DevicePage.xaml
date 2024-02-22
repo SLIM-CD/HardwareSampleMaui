@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:HardwareSampleMaui.ViewModels"
+    x:Class="HardwareSampleMaui.Pages.DevicePage"
+    x:DataType="viewModels:DeviceViewModel"
+    Title="Device Assemblies"
+    BackgroundImageSource="background.png"
+    Shell.TitleColor="White"
+    Shell.BackgroundColor="#2196F3">
+    <ScrollView>
+        <VerticalStackLayout
+            MaximumWidthRequest="500"
+            Margin="10,10,10,0">
+            <Border 
+                BackgroundColor="AliceBlue">
+                <HorizontalStackLayout
+                    HorizontalOptions="Center"
+                    Spacing="5"
+                    Margin="5">
+                    <Label 
+                        Text="Loaded Assembly:" 
+                        IsEnabled="{Binding UiEntryEnabled}"
+                        FontAttributes="Bold" />
+                    <Label
+                        Text="{Binding LoadedAssemblyName}"
+                        IsEnabled="{Binding UiEntryEnabled}"
+                        FontAttributes="Bold" />
+
+                </HorizontalStackLayout>
+
+            </Border>
+
+            <Label 
+                Text="Path:" 
+                IsEnabled="{Binding UiEntryEnabled}"
+                FontAttributes="Bold"
+                Margin="5,5,0,0" />
+
+            <Grid
+                IsVisible="{Binding IsFolderSelectionSupported, Mode=OneTime}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Entry
+                    Grid.Column="0"
+                    Text="{Binding SelectedAssembliesPath}"
+                    IsEnabled="{Binding UiEntryEnabled}"
+                    IsReadOnly="True"
+                    Placeholder="Not selected, optional" 
+                    BackgroundColor="AliceBlue"
+                    Margin="0,0,5,0" />
+                <Button 
+                    Grid.Column="1"
+                    Text="Select"
+                    IsEnabled="{Binding UiEntryEnabled}"
+                    Command="{Binding SelectAssembliesPath}" />
+
+            </Grid>
+
+            <Label 
+                Text="Select:" 
+                IsEnabled="{Binding UiEntryEnabled}" 
+                FontAttributes="Bold"
+                Margin="5,5,0,0" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                <Picker
+                    Grid.Column="0"
+                    ItemsSource="{Binding DeviceAssemblies, Mode=OneWay}"
+                    ItemDisplayBinding="{Binding Display}"
+                    SelectedItem="{Binding SelectedDeviceAssembly}"
+                    IsEnabled="{Binding CanSelectDeviceAssemblies}"
+                    BackgroundColor="AliceBlue" 
+                    Margin="0,0,5,0" />
+                <Button 
+                    Grid.Column="1"
+                    Text="Discover"
+                    IsEnabled="{Binding UiEntryEnabled}"
+                    Command="{Binding DiscoverAssemblies}"
+                    CommandParameter="{Binding SelectedAssembliesPath}" />
+
+            </Grid>
+
+            <Button 
+                Text="Load Assembly"
+                IsEnabled="{Binding CanLoadSelectedAssembly}"
+                Command="{Binding LoadSelectedAssembly}"
+                CommandParameter="{Binding SelectedDeviceAssembly}"
+                Margin="0,10,0,0" />
+
+            <Button 
+                Text="Go To Connection"
+                IsEnabled="{Binding CanGoToConnection}"
+                Command="{Binding NavigateNext}"
+                Margin="0,10,0,0" />
+
+            <Label 
+                Text="{Binding Error}" 
+                TextColor="Red" />
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>
