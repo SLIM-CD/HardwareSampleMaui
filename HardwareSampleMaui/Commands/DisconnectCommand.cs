@@ -1,62 +1,63 @@
 ﻿using HardwareSampleMaui.Services;
 using SlimCDTypeLib;
 
-namespace HardwareSampleMaui.Commands
-{
-    public class DisconnectCommand(IDeviceService deviceService) : CommandBase
-    {
-        private IDeviceService DeviceService { get; } = deviceService;
+namespace HardwareSampleMaui.Commands;
 
-        public override async void Execute(object? parameter)
+// The class needs to be marked as partial for trimming and AOT (Ahead-Of-Time) compatibility when passed across the WinRT ABI (Application Binary Interface).
+public partial class DisconnectCommand(IDeviceService deviceService) : CommandBase
+{
+    private IDeviceService DeviceService { get; } = deviceService;
+
+    public override async void Execute(object? parameter)
+    {
+        var executing = false;
+        var executionSync = ExecutionSync;
+        if (executionSync == null)
+            return;
+
+        try
         {
-            var executing = false;
-            var executionSync = ExecutionSync;
-            if (executionSync == null)
+            executing = await executionSync.WaitAsync(0);
+            if (!executing)
                 return;
 
-            try
+            OnStarting();
+
+            CanBeExecuted = false;
+
+            CanCancel = true;
+            Cts = new CancellationTokenSource();
+
+            var device = DeviceService.Device;
+            if (device == null)
             {
-                if (!(executing = await executionSync.WaitAsync(0)))
-                    return;
-
-                OnStarting();
-
-                CanBeExecuted = false;
-
-                CanCancel = true;
-                Cts = new CancellationTokenSource();
-
-                var device = DeviceService.Device;
-                if (device == null)
-                {
-                    OnFinished(Response<object?>.Failure("The device library is not found"));
-                    return;
-                }
-
-                var result = await device.DeviceDisconnectAsync(Cts.Token);
-
-                OnFinished(result.IsSuccess
-                    ? Response<object?>.Success(null)
-                    : Response<object?>.Failure(result.Message));
+                OnFinished(Response<object?>.Failure("The device library is not found"));
+                return;
             }
-            catch (Exception ex)
-            {
-                OnFinished(Response<object?>.Failure(ex.Message));
-            }
-            finally
-            {
-                if (executing)
-                {
-                    CanCancel = false;
-                    Cts?.Dispose();
-                    Cts = null;
 
-                    CanBeExecuted = true;
+            var result = await device.DeviceDisconnectAsync(Cts.Token);
 
-                    executionSync.Release();
-                }
+            OnFinished(result.IsSuccess
+                ? Response<object?>.Success(null)
+                : Response<object?>.Failure(result.Message));
+        }
+        catch (Exception ex)
+        {
+            OnFinished(Response<object?>.Failure(ex.Message));
+        }
+        finally
+        {
+            if (executing)
+            {
+                CanCancel = false;
+                Cts?.Dispose();
+                Cts = null;
+
+                CanBeExecuted = true;
+
+                executionSync.Release();
             }
         }
-
     }
+
 }

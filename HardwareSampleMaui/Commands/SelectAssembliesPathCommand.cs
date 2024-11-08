@@ -3,7 +3,8 @@ using SlimCDTypeLib;
 
 namespace HardwareSampleMaui.Commands;
 
-public class SelectAssembliesPathCommand(IFolderPicker folderPicker) : CommandBase
+// The class needs to be marked as partial for trimming and AOT (Ahead-Of-Time) compatibility when passed across the WinRT ABI (Application Binary Interface).
+public partial class SelectAssembliesPathCommand(IFolderPicker folderPicker) : CommandBase
 {
     public IFolderPicker FolderPicker { get; } = folderPicker;
 
@@ -16,7 +17,8 @@ public class SelectAssembliesPathCommand(IFolderPicker folderPicker) : CommandBa
 
         try
         {
-            if (!(executing = await executionSync.WaitAsync(0)))
+            executing = await executionSync.WaitAsync(0);
+            if (!executing)
                 return;
 
             OnStarting();

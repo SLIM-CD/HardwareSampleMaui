@@ -72,39 +72,64 @@ public abstract class CommandBase : ICommand, ICancelable, IDisposable, IAsyncDi
     #endregion
 
     #region IDisposable Implementation
-    public void Dispose()
+    private bool _disposed;
+
+    ~CommandBase()
     {
-        CastAndDispose(Cts);
-        CastAndDispose(ExecutionSync);
+        Dispose(disposing: false);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+            return;
+
+        if (disposing)
+        {
+            CastAndDispose(Cts);
+            CastAndDispose(ExecutionSync);
+        }
+
         Cts = null;
         ExecutionSync = null;
+        _disposed = true;
+    }
 
-        return;
-
-        static void CastAndDispose(object? resource)
-        {
-            if (resource is IDisposable disposable)
-                disposable.Dispose();
-        }
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 
     public async ValueTask DisposeAsync()
     {
-        await CastAndDispose(Cts);
-        await CastAndDispose(ExecutionSync);
+        if (_disposed)
+            return;
 
-        return;
+        await CastAndDisposeAsync(Cts);
+        await CastAndDisposeAsync(ExecutionSync);
 
-        static async ValueTask CastAndDispose(object? resource)
-        {
-            if (resource is not IDisposable disposable)
-                return;
-            if (disposable is IAsyncDisposable asyncDisposable)
-                await asyncDisposable.DisposeAsync();
-            else
-                disposable.Dispose();
-        }
+        Cts = null;
+        ExecutionSync = null;
+        _disposed = true;
+
+        GC.SuppressFinalize(this);
     }
 
+    private static void CastAndDispose(object? resource)
+    {
+        if (resource is IDisposable disposable)
+            disposable.Dispose();
+    }
+
+    private static async ValueTask CastAndDisposeAsync(object? resource)
+    {
+        if (resource is not IDisposable disposable)
+            return;
+        if (disposable is IAsyncDisposable asyncDisposable)
+            await asyncDisposable.DisposeAsync();
+        else
+            disposable.Dispose();
+    }
     #endregion
 }

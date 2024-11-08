@@ -17,7 +17,8 @@ public sealed class DeviceServiceChangedEventArgs(string? propertyName = null, o
     public object? PreviousDeviceInstance { get; } = previousDeviceInstance;
 }
 
-public sealed class DeviceService : IDeviceService, INotifyPropertyChanged
+// The class needs to be marked as partial for trimming and AOT (Ahead-Of-Time) compatibility when passed across the WinRT ABI (Application Binary Interface).
+public partial class DeviceService : IDeviceService, INotifyPropertyChanged
 {
     public ISlimCDDeviceAsync? Device { get; private set; }
     public IAssemblyInfo? AssemblyInfo { get; private set; }
@@ -27,12 +28,12 @@ public sealed class DeviceService : IDeviceService, INotifyPropertyChanged
         var previousDeviceInstance = Device;
         Device = device;
         AssemblyInfo = assemblyInfo;
-        OnPropertyChanged(nameof(Device), previousDeviceInstance);
+        OnPropertyChanged(previousDeviceInstance, nameof(Device));
     }
 
     #region INotifyPropertyChanged Implementation
     public event PropertyChangedEventHandler? PropertyChanged;
-    private void OnPropertyChanged([CallerMemberName] string? propertyName = null, object? previousDeviceInstance = null) => 
+    private void OnPropertyChanged(object? previousDeviceInstance = null, [CallerMemberName] string? propertyName = null) =>
         PropertyChanged?.Invoke(this, new DeviceServiceChangedEventArgs(propertyName, previousDeviceInstance));
     #endregion
 }

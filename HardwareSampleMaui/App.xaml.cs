@@ -2,7 +2,6 @@
 
 public partial class App : Application
 {
-
     public App()
     {
         InitializeComponent();
@@ -22,7 +21,7 @@ public partial class App : Application
             return window;
         }
         
-        private async void OnWindowActivated(object? sender, EventArgs e)
+        private static async void OnWindowActivated(object? sender, EventArgs e)
         {
             if (sender is not Window window) 
                 return;
@@ -36,10 +35,12 @@ public partial class App : Application
             // Yield for the window to finish resizing
             await window.Dispatcher.DispatchAsync(() => { });
 
-            // Center the window
-            //var displayInfo = DeviceDisplay.Current.MainDisplayInfo;
-            //window.X = (displayInfo.Width / displayInfo.Density - window.Width) / 2;
-            //window.Y = (displayInfo.Height / displayInfo.Density - window.Height) / 2;
+#pragma warning disable S125 // Commented-out code
+            // This is how you can center the window
+            // var displayInfo = DeviceDisplay.Current.MainDisplayInfo;
+            // window.X = (displayInfo.Width / displayInfo.Density - window.Width) / 2;
+            // window.Y = (displayInfo.Height / displayInfo.Density - window.Height) / 2;
+#pragma warning restore S125 // Commented-out code
         }
 #endif
 }

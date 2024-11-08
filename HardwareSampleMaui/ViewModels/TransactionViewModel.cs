@@ -6,12 +6,13 @@ using SlimCDTypeLib;
 
 namespace HardwareSampleMaui.ViewModels;
 
-public class TransactionViewModel : ITransactionParameters, INotifyPropertyChanged
+// The class needs to be marked as partial for trimming and AOT (Ahead-Of-Time) compatibility when passed across the WinRT ABI (Application Binary Interface).
+public partial class TransactionViewModel : ITransactionParameters, INotifyPropertyChanged
 {
-    private const string STANDBY = "Standby";
+    private const string Standby = "Standby";
 
     #region Backing Fields
-    private string _status = STANDBY;
+    private string _status = Standby;
     private decimal _amount;
     private bool _isTransactionInProgress;
     private bool _isCancelInProgress;

@@ -5,11 +5,12 @@
 	  <SccProvider>SAK</SccProvider>
 	  <SccAuxPath>SAK</SccAuxPath>
 	  <SccLocalPath>SAK</SccLocalPath>
+    <NoWarn>$(NoWarn);IDE0130;XA0101</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0</TargetFrameworks>
+		<!-- <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks> -->
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
 
@@ -34,7 +35,7 @@
 		<ApplicationId>com.companyname.hardwaresamplemaui</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion>1.1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
@@ -47,19 +48,16 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
 	  <PublishTrimmed>False</PublishTrimmed>
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	  <RunAOTCompilation>False</RunAOTCompilation>
 	  <DebugSymbols>True</DebugSymbols>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
 	  <EnableSGenConc>True</EnableSGenConc>
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
 	  <EnableSGenConc>True</EnableSGenConc>
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios'">
@@ -68,24 +66,20 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	  <TrimMode>copyused</TrimMode>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-maccatalyst|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
+    <RuntimeIdentifier>maccatalyst-x64</RuntimeIdentifier>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows10.0.19041.0|AnyCPU'">
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-windows10.0.19041.0|AnyCPU'">
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -105,21 +99,34 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.0" />
-		<PackageReference Include="DeviceFramework" Version="1.8.0" />
-		<PackageReference Include="IDTechNeo.Maui" Version="1.0.21" />
-		<PackageReference Include="IngenicoUpp" Version="1.1.7648" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.40" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.40" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="SlimCD" Version="1.2.3" />
-		<PackageReference Include="SlimCDDevice" Version="4.0.5" />
-		<PackageReference Include="SlimCDTypeLib" Version="1.3.3" />
+	  <Content Remove="C:\Users\Dennis\.nuget\packages\slimcd\2.0.2\contentFiles\any\net8.0\ReadMe.txt" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+  <ItemGroup>
+    <None Update="$(NuGetPackageRoot)ingenicoupp\2.0.1\contentFiles\any\net8.0\IngenicoUpp.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.*" />
+		<PackageReference Include="DeviceFramework" Version="2.*" />
+		<PackageReference Include="IDTechNeo.Maui" Version="1.*" />
+		<PackageReference Include="IngenicoUpp" Version="2.0.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.*" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.*" />
+		<PackageReference Include="SlimCD" Version="2.*" />
+		<PackageReference Include="SlimCDDevice" Version="5.*" />
+		<PackageReference Include="SlimCDTypeLib" Version="2.*" />
+		<PackageReference Include="System.Drawing.Common" Version="8.*" />
+		<PackageReference Include="System.Formats.Asn1" Version="8.*" />
+		<PackageReference Include="System.Security.Cryptography.Xml" Version="8.*" />
+	</ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
 	  <PackageReference Include="CommManagerAndroid">
-	    <Version>1.2.7</Version>
+	    <Version>1.*</Version>
 	  </PackageReference>
 	</ItemGroup>
 
@@ -133,6 +140,12 @@
 	  <Compile Update="Pages\TransactionPage.xaml.cs">
 	    <DependentUpon>TransactionPage.xaml</DependentUpon>
 	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="C:\Users\Dennis\.nuget\packages\ingenicoupp\2.0.1\contentFiles\any\net8.0\IngenicoUpp.ini">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 	<ItemGroup>

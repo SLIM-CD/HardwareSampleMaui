@@ -9,7 +9,8 @@ public interface IConnectionParameters
     ICommChannel? SelectedCommChannel { get; }
 }
 
-public class ConnectCommand(IDeviceService deviceService) : CommandBase
+// The class needs to be marked as partial for trimming and AOT (Ahead-Of-Time) compatibility when passed across the WinRT ABI (Application Binary Interface).
+public partial class ConnectCommand(IDeviceService deviceService) : CommandBase
 {
     private IDeviceService DeviceService { get; } = deviceService;
 
@@ -22,7 +23,8 @@ public class ConnectCommand(IDeviceService deviceService) : CommandBase
 
         try
         {
-            if (!(executing = await executionSync.WaitAsync(0)))
+            executing = await executionSync.WaitAsync(0);
+            if (!executing)
                 return;
 
             OnStarting();
@@ -94,14 +96,17 @@ public class ConnectCommand(IDeviceService deviceService) : CommandBase
             DLLclass = assemblyName
         };
     }
+
     private static (string address, int port) SplitAddressAndPort(string? addressAndPort)
     {
         if (string.IsNullOrWhiteSpace(addressAndPort))
             return ("", 0);
         var dividerOffset = addressAndPort.IndexOf(':');
-        return dividerOffset != -1
-            ? (addressAndPort[..dividerOffset], int.TryParse(addressAndPort[(dividerOffset + 1)..], out var parsedPort) ? parsedPort : 0)
-            : (addressAndPort, 0);
+        return dividerOffset switch
+        {
+            -1 => (addressAndPort, 0),
+            _ => (addressAndPort[..dividerOffset], int.TryParse(addressAndPort[(dividerOffset + 1)..], out var parsedPort) ? parsedPort : 0)
+        };
     }
 
     private static DeviceConnectRequest CreateSerialConnectRequest(string? channelId, string assemblyName)

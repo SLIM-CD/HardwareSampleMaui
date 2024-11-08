@@ -4,7 +4,8 @@ using SlimCDTypeLib;
 
 namespace HardwareSampleMaui.Commands;
 
-public class LoadSelectedAssemblyCommand(PlatformSpecificService platformSpecificService) : CommandBase
+// The class needs to be marked as partial for trimming and AOT (Ahead-Of-Time) compatibility when passed across the WinRT ABI (Application Binary Interface).
+public partial class LoadSelectedAssemblyCommand(PlatformSpecificService platformSpecificService) : CommandBase
 {
     private IPlatformSpecific PlatformSpecific { get; } = platformSpecificService.Get();
 
@@ -17,7 +18,8 @@ public class LoadSelectedAssemblyCommand(PlatformSpecificService platformSpecifi
 
         try
         {
-            if (!(executing = await executionSync.WaitAsync(0)))
+            executing = await executionSync.WaitAsync(0);
+            if (!executing)
                 return;
 
             OnStarting();

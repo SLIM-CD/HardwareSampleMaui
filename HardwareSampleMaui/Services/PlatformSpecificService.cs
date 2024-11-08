@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using SlimCDTypeLib;
+﻿using SlimCDTypeLib;
 
 namespace HardwareSampleMaui.Services;
 

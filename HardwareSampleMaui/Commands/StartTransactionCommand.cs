@@ -10,7 +10,9 @@ public interface ITransactionParameters
     string Status { get; set; }
 }
 
-public class StartTransactionCommand(IDeviceService deviceService) : CommandBase
+// The class needs to be marked as partial for trimming and AOT (Ahead-Of-Time) compatibility when passed across the WinRT ABI (Application Binary Interface).
+// ReSharper disable once PartialTypeWithSinglePart
+public partial class StartTransactionCommand(IDeviceService deviceService) : CommandBase
 {
     private IDeviceService DeviceService { get; } = deviceService;
 
@@ -23,7 +25,8 @@ public class StartTransactionCommand(IDeviceService deviceService) : CommandBase
 
         try
         {
-            if (!(executing = await executionSync.WaitAsync(0)))
+            executing = await executionSync.WaitAsync(0);
+            if (!executing)
                 return;
 
             OnStarting();
@@ -139,7 +142,7 @@ public class StartTransactionCommand(IDeviceService deviceService) : CommandBase
             siteid = 228226448,
             priceid = 74,
             product = "HardwareSample",
-            version = "1.0.0",
+            version = "1.1.0",
             key = "",
             transtype = "Sale",
             authcode = "",

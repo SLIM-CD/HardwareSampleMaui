@@ -8,7 +8,9 @@ namespace HardwareSampleMaui.Services;
 
 public partial class PlatformSpecificService
 {
+#pragma warning disable CA1822 // Mark members as static
     public partial IPlatformSpecific Get() => new PlatformSpecific();
+#pragma warning restore CA1822 // Mark members as static
 }
 
 internal class PlatformSpecific : IPlatformSpecific
@@ -42,7 +44,7 @@ internal class PlatformSpecific : IPlatformSpecific
     private static Task AndroidInitializer(string deviceAssemblyName, ISlimCDDeviceAsync deviceLibrary)
     {
         if (AndroidContext == null)
-            throw new ArgumentException("Invalid usage, AndroidContext has not been set", nameof(AndroidContext));
+            throw new InvalidOperationException("Invalid usage, AndroidContext has not been set");
         Bluetooth.Initialize(AndroidContext.GetSystemService(Context.BluetoothService) as BluetoothManager);
         return Task.CompletedTask;
     }

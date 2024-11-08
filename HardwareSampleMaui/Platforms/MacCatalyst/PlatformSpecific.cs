@@ -5,7 +5,9 @@ namespace HardwareSampleMaui.Services;
 
 public partial class PlatformSpecificService
 {
+#pragma warning disable CA1822 // Mark members as static
     public partial IPlatformSpecific Get() => new PlatformSpecific();
+#pragma warning restore CA1822 // Mark members as static
 }
 
 internal class PlatformSpecific : IPlatformSpecific

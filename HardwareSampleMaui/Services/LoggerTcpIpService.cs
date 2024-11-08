@@ -9,9 +9,9 @@ public interface ILogger
     Task Write(string message);
 }
 
-public class LoggerTcpIpService(IPEndPoint address) : ILogger, IDisposable, IAsyncDisposable
+public partial class LoggerTcpIpService(IPEndPoint address) : ILogger, IDisposable, IAsyncDisposable
 {
-    private IPEndPoint Address { get; set; } = address;
+    private IPEndPoint Address { get; } = address;
     private TcpClient? Client { get; set; }
     private NetworkStream? ClientStream { get; set; }
 
@@ -59,33 +59,40 @@ public class LoggerTcpIpService(IPEndPoint address) : ILogger, IDisposable, IAsy
         }
     }
 
-    public void Dispose()
+    #region Dispose Implementation
+    private bool _disposed;
+
+    protected virtual void Dispose(bool disposing)
     {
-        var clientStream = ClientStream;
-        if (clientStream != null)
+        if (_disposed) 
+            return;
+
+        if (disposing)
         {
-            try { clientStream.Dispose(); }
-            catch { /* ignore */ }
-            ClientStream = null;
+            ClientStream?.Dispose();
+            Client?.Dispose();
         }
 
-        var client = Client;
-        if (client == null) 
-            return;
-        try { client.Dispose(); }
-        catch { /* ignore */ }
+        ClientStream = null;
         Client = null;
+        _disposed = true;
+    }
+
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 
     public async ValueTask DisposeAsync()
     {
-        var client = Client;
-        // ReSharper disable once SuspiciousTypeConversion.Global
-        if (client is IAsyncDisposable clientAsyncDisposable)
-            await clientAsyncDisposable.DisposeAsync();
-        else
-            client?.Dispose();
-        if (ClientStream != null) 
+        Client?.Dispose();
+        
+        if (ClientStream != null)
             await ClientStream.DisposeAsync();
+
+        Dispose(disposing: false);
+        GC.SuppressFinalize(this);
     }
+    #endregion
 }

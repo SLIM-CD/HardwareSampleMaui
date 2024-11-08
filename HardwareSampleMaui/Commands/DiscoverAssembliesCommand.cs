@@ -3,7 +3,8 @@ using SlimCDTypeLib;
 
 namespace HardwareSampleMaui.Commands;
 
-public sealed class DiscoverAssembliesCommand : CommandBase
+// The class needs to be marked as partial for trimming and AOT (Ahead-Of-Time) compatibility when passed across the WinRT ABI (Application Binary Interface).
+public partial class DiscoverAssembliesCommand : CommandBase
 {
     public override async void Execute(object? parameter)
     {
@@ -14,7 +15,8 @@ public sealed class DiscoverAssembliesCommand : CommandBase
 
         try
         {
-            if (!(executing = await executionSync.WaitAsync(0)))
+            executing = await executionSync.WaitAsync(0);
+            if (!executing)
                 return;
 
             OnStarting();

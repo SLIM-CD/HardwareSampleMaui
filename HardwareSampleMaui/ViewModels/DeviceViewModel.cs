@@ -11,16 +11,17 @@ using SlimCDTypeLib;
 
 namespace HardwareSampleMaui.ViewModels;
 
-public sealed class DeviceViewModel : INotifyPropertyChanged
+// The class needs to be marked as partial for trimming and AOT (Ahead-Of-Time) compatibility when passed across the WinRT ABI (Application Binary Interface).
+public partial class DeviceViewModel : INotifyPropertyChanged
 {
-    private const string NONE = "None";
+    private const string None = "None";
 
     #region Backing Fields
     private IAssemblyInfo? _selectedDeviceAssembly;
     private string _selectedAssembliesPath = "";
     private bool _canCancelAssembliesDiscovery;
     private bool _uiEntryEnabled = true;
-    private string _loadedAssemblyName = NONE;
+    private string _loadedAssemblyName = None;
     private string _error = "";
 
     #endregion
@@ -102,7 +103,7 @@ public sealed class DeviceViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    public bool CanGoToConnection => UiEntryEnabled && !string.IsNullOrEmpty(LoadedAssemblyName) && LoadedAssemblyName != NONE;
+    public bool CanGoToConnection => UiEntryEnabled && !string.IsNullOrEmpty(LoadedAssemblyName) && LoadedAssemblyName != None;
     public bool IsFolderSelectionSupported { get; } = 
         OperatingSystem.IsWindows() || 
         OperatingSystem.IsAndroid() || 

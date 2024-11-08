@@ -1,5 +1,4 @@
-﻿//using System.Net;
-using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Storage;
 using HardwareSampleMaui.Commands;
 using HardwareSampleMaui.Pages;

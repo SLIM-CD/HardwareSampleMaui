@@ -12,7 +12,8 @@ using ICommand = System.Windows.Input.ICommand;
 
 namespace HardwareSampleMaui.ViewModels;
 
-public class ConnectionViewModel : IConnectionParameters, INotifyPropertyChanged
+// The class needs to be marked as partial for trimming and AOT (Ahead-Of-Time) compatibility when passed across the WinRT ABI (Application Binary Interface).
+public partial class ConnectionViewModel : IConnectionParameters, INotifyPropertyChanged
 {
     #region Backing Fields
     private static readonly ICommChannel NoneSelectedChannel = new CommChannel { Id = "None", Name = "None", Description = "None" };
@@ -237,7 +238,7 @@ public class ConnectionViewModel : IConnectionParameters, INotifyPropertyChanged
         CommChannels.CollectionChanged += OnCommChannelsCollectionChanged;
 
         DeviceService = deviceService;
-        if (DeviceService is INotifyPropertyChanged deviceServiceNotifier) 
+        if (DeviceService is INotifyPropertyChanged deviceServiceNotifier)
             deviceServiceNotifier.PropertyChanged += OnDeviceChanged;
 
         discoverComm.Starting += OnDiscoverCommStarting;
@@ -287,7 +288,7 @@ public class ConnectionViewModel : IConnectionParameters, INotifyPropertyChanged
     {
         CommChannels.Clear();
         CommChannels.Add(NoneSelectedChannel);
-        SelectedCommChannel = CommChannels.First();
+        SelectedCommChannel = CommChannels[0];
         ConnectionTypes.Clear();
         IpAddress = "";
         
@@ -342,7 +343,7 @@ public class ConnectionViewModel : IConnectionParameters, INotifyPropertyChanged
             return ValidationResult.NotEntered;
         }
 
-        if (ipAddressStr.Count(ch => ch == '.') != 3 && !ipAddressStr.Contains(":") ||
+        if (ipAddressStr.Count(ch => ch == '.') != 3 && !ipAddressStr.Contains(':') ||
             !IPAddress.TryParse(ipAddressStr, out var parsedIpAddress))
         {
             ipAddress = null;
@@ -370,7 +371,7 @@ public class ConnectionViewModel : IConnectionParameters, INotifyPropertyChanged
 
             CommChannels.Clear();
             CommChannels.Add(NoneSelectedChannel);
-            SelectedCommChannel = CommChannels.First();
+            SelectedCommChannel = CommChannels[0];
             if (response.Data is not IReadOnlyCollection<ICommChannel> channels)
                 return;
 
