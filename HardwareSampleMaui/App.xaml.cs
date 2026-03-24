@@ -5,42 +5,43 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-
-        MainPage = new AppShell();
     }
 
-#if WINDOWS
-        private const int WINDOW_WIDTH = 400;
-        private const int WINDOW_HEIGHT = 600;
-        private const string WINDOW_TITLE = "Hardware Sample MAUI App";
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        var window = new Window(new AppShell());
 
-        protected override Window CreateWindow(IActivationState? activationState)
-        {
-            var window = base.CreateWindow(activationState);
-            window.Activated += OnWindowActivated;
-            return window;
-        }
-        
-        private static async void OnWindowActivated(object? sender, EventArgs e)
-        {
-            if (sender is not Window window) 
-                return;
+        #if WINDOWS
+        window.Activated += OnWindowActivated;
+        #endif
 
-            window.Title = WINDOW_TITLE;
+        return window;
+    }
 
-            // Resize the window
-            window.Width = WINDOW_WIDTH;
-            window.Height = WINDOW_HEIGHT;
+    #if WINDOWS
+    private const int WINDOW_WIDTH = 400;
+    private const int WINDOW_HEIGHT = 600;
+    private const string WINDOW_TITLE = "Hardware Sample MAUI App";
+    private static async void OnWindowActivated(object? sender, EventArgs e)
+    {
+        if (sender is not Window window) 
+            return;
 
-            // Yield for the window to finish resizing
-            await window.Dispatcher.DispatchAsync(() => { });
+        window.Title = WINDOW_TITLE;
 
-#pragma warning disable S125 // Commented-out code
-            // This is how you can center the window
-            // var displayInfo = DeviceDisplay.Current.MainDisplayInfo;
-            // window.X = (displayInfo.Width / displayInfo.Density - window.Width) / 2;
-            // window.Y = (displayInfo.Height / displayInfo.Density - window.Height) / 2;
-#pragma warning restore S125 // Commented-out code
-        }
-#endif
+        // Resize the window
+        window.Width = WINDOW_WIDTH;
+        window.Height = WINDOW_HEIGHT;
+
+        // Yield for the window to finish resizing
+        await window.Dispatcher.DispatchAsync(() => { });
+
+        #pragma warning disable S125 // Commented-out code
+        // This is how you can center the window
+        // var displayInfo = DeviceDisplay.Current.MainDisplayInfo;
+        // window.X = (displayInfo.Width / displayInfo.Density - window.Width) / 2;
+        // window.Y = (displayInfo.Height / displayInfo.Density - window.Height) / 2;
+        #pragma warning restore S125 // Commented-out code
+    }
+    #endif
 }

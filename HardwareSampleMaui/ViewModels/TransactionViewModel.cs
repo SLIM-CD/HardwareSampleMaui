@@ -163,13 +163,13 @@ public partial class TransactionViewModel : ITransactionParameters, INotifyPrope
         var response = eventArgs.Response;
         if (response.IsFailure)
         {
-            await (Application.Current?.MainPage?.DisplayAlert("Error", response.Message, "OK") ?? Task.CompletedTask);
+            await (Shell.Current.DisplayAlertAsync("Error", response.Message, "OK") ?? Task.CompletedTask);
             return;
         }
 
         var reply = (DeviceTransactionCancelReply)response.Data!;
         if (reply.responsecode != "0") 
-            await (Application.Current?.MainPage?.DisplayAlert("Error", reply.description, "OK") ?? Task.CompletedTask);
+            await (Shell.Current.DisplayAlertAsync("Error", reply.description, "OK") ?? Task.CompletedTask);
     }
 
     #region INotifyPropertyChanged Implementation
