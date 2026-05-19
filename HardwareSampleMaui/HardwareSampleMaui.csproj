@@ -87,15 +87,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DeviceFramework" Version="2.0.12" />
-		<PackageReference Include="IDTechNeo.Maui" Version="2.0.0" />
-		<PackageReference Include="IngenicoUpp" Version="2.0.2" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.50" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.50" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="14.0.1" />
-		<PackageReference Include="SlimCD" Version="3.4.3" />
-		<PackageReference Include="SlimCDDevice" Version="5.0.1" />
+		<PackageReference Include="DeviceFramework" Version="2.0.14" />
+		<PackageReference Include="IDTechNeo.Maui" Version="2.0.3" />
+		<PackageReference Include="IngenicoUpp" Version="2.0.3" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.60" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.60" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.8" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="14.1.1" />
+		<PackageReference Include="SlimCD" Version="3.4.4" />
+		<PackageReference Include="SlimCDDevice" Version="5.0.3" />
 		<PackageReference Include="SlimCDTypeLib" Version="2.1.2" />
 	</ItemGroup>
 
@@ -104,7 +104,7 @@
       <Version>3.2.5.439</Version>
     </PackageReference>
     <PackageReference Include="CommManagerAndroid">
-      <Version>1.3.1</Version>
+      <Version>1.3.2</Version>
     </PackageReference>
   </ItemGroup>
 
